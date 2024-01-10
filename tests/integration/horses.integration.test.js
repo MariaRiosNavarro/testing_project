@@ -77,7 +77,7 @@ describe('Route "/" Delete', () => {
     jest.spyOn(Horse, "findByIdAndDelete").mockRestore();
   });
 
-  test("I expect a code 500 when I use the Delete rod incorrectly", async () => {
+  test("I expect a code 500 when I use the Delete route incorrectly", async () => {
     // Mock findByIdAndDelete to throw an exception
     jest.spyOn(Horse, "findByIdAndDelete").mockImplementationOnce(() => {
       throw new Error("Simulated error");

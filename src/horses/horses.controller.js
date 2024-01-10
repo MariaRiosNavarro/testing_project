@@ -28,3 +28,21 @@ export const deleteHorse = async (req, res) => {
     res.status(500).end();
   }
 };
+
+export const putHorse = async (req, res) => {
+  try {
+    const { newHorseData } = req.body;
+    const horseId = newHorseData._id;
+    const updatedHorse = await Horse.findByIdAndUpdate(horseId, newHorseData, {
+      new: true,
+    });
+
+    if (!updatedHorse) {
+      return res.status(404).json({ message: "Horse not found" });
+    }
+
+    res.status(201).json(newHorseData);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
