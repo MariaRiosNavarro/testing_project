@@ -20,8 +20,8 @@ export const getHorses = async (req, res) => {
 };
 
 export const deleteHorse = async (req, res) => {
-  const { _id } = req.body;
   try {
+    const { _id } = req.body;
     await Horse.findByIdAndDelete({ _id: _id });
     res.status(204).end();
   } catch (error) {

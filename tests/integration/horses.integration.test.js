@@ -5,6 +5,8 @@ import { jest } from "@jest/globals";
 
 const request = supertest(app);
 
+// --------------------------------------GET
+
 describe('Check the Route "/" Get', () => {
   test("I expect a code 200 when I use the route Get properly", async () => {
     const response = await request.get("/api/horses");
@@ -18,7 +20,7 @@ describe('Check the Route "/" Get', () => {
   test("I expect a code 500 if I use the Get route incorrectly", async () => {
     // Mock find function to throw an exception
     jest.spyOn(Horse, "find").mockImplementationOnce(() => {
-      // find is a static method of the Horse class, not an instance method. So you have to spy on the find method directly in the Horse class.
+      // find is a static method of the Horse class, not an instance method . So you have to spy on the find method directly in the Horse class.
       // DONT USE Horse.prototyp like in POST
       throw new Error("Simulated error");
     });
@@ -29,7 +31,7 @@ describe('Check the Route "/" Get', () => {
   });
 });
 
-// --------------------
+// --------------------------------- POST
 
 describe('Check the Route "/" POST', () => {
   test("I expect a code 201 when I use the route Post properly", async () => {
@@ -56,5 +58,38 @@ describe('Check the Route "/" POST', () => {
     expect(response.statusCode).toBe(500);
     // Restore the original implementation of the find function
     jest.spyOn(Horse.prototype, "save").mockRestore();
+  });
+});
+// --------------------------------- DELETE
+
+describe('Route "/" Delete', () => {
+  test("Ich erwarte ein Code 204 wenn ich die Rute Delete richtig benutze", async () => {
+    // DONT USE Horse.prototyp like in POST
+    jest.spyOn(Horse, "findByIdAndDelete").mockResolvedValueOnce();
+
+    const response = await request
+      .delete("/api/horses")
+      .send({ _id: "valid_id" });
+
+    expect(response.statusCode).toBe(204);
+
+    // Restore the original implementation of findByIdAndDelete
+    jest.spyOn(Horse, "findByIdAndDelete").mockRestore();
+  });
+
+  test("Ich erwarte ein Code 500 wenn ich die Rute Delete falsch benutze", async () => {
+    // Mock findByIdAndDelete to throw an exception
+    jest.spyOn(Horse, "findByIdAndDelete").mockImplementationOnce(() => {
+      throw new Error("Simulated error");
+    });
+
+    const response = await request
+      .delete("/api/horses")
+      .send({ _id: "invalid_id" });
+
+    expect(response.statusCode).toBe(500);
+
+    // Restore the original implementation of findByIdAndDelete
+    jest.spyOn(Horse, "findByIdAndDelete").mockRestore();
   });
 });
