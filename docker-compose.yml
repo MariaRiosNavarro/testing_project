@@ -1,5 +1,14 @@
 version: '3.8'
 services:
+  database:
+    container_name: horseDB
+    image: mongo:latest
+    networks:
+      - backend
+    ports:
+      - 27018:27017
+    volumes:
+      - dataDB:/data/db
   server:
     build: ./
     networks:
@@ -11,13 +20,6 @@ services:
       - ./:/app
     depends_on:
       - database
-  database:
-    container_name: horseDB
-    image: mongo:latest
-    networks:
-      - backend
-    volumes:
-      - dataDB:/data/db
 networks:
   backend:
 volumes:

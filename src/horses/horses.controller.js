@@ -1,4 +1,4 @@
-import { Horse } from "./horses.model";
+import { Horse } from "./horses.model.js";
 
 export const postHorse = async (req, res) => {
   const horse = new Horse(req.body);
