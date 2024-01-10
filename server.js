@@ -1,5 +1,3 @@
 import { app } from "./src/app.js";
 
-const PORT = 9999;
-
-app.listen(9999);
+app.listen(process.env.PORT, () => console.log(process.env.PORT));
