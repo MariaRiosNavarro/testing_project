@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  server:
+    build: ./
+    networks:
+      - backend
+    container_name: horseServer
+    ports:
+      - 9000:9000
+    volumes:
+      - ./:/app
+    depends_on:
+      - database
+  database:
+    container_name: horseDB
+    image: mongo:latest
+    networks:
+      - backend
+    volumes:
+      - dataDB:/data/db
+networks:
+  backend:
+volumes:
+  dataDB:
