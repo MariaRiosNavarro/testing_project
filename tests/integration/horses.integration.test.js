@@ -56,7 +56,7 @@ describe('Check the Route "/" POST', () => {
       breed: "testbreed",
     });
     expect(response.statusCode).toBe(500);
-    // Restore the original implementation of the find function
+    // Restore the original implementation of the save function
     jest.spyOn(Horse.prototype, "save").mockRestore();
   });
 });
