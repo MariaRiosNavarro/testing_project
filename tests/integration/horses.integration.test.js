@@ -63,7 +63,7 @@ describe('Check the Route "/" POST', () => {
 // --------------------------------- DELETE
 
 describe('Route "/" Delete', () => {
-  test("Ich erwarte ein Code 204 wenn ich die Rute Delete richtig benutze", async () => {
+  test("I expect a code 204 when I use the Delete rod correctly", async () => {
     // DONT USE Horse.prototyp like in POST
     jest.spyOn(Horse, "findByIdAndDelete").mockResolvedValueOnce();
 
@@ -77,7 +77,7 @@ describe('Route "/" Delete', () => {
     jest.spyOn(Horse, "findByIdAndDelete").mockRestore();
   });
 
-  test("Ich erwarte ein Code 500 wenn ich die Rute Delete falsch benutze", async () => {
+  test("I expect a code 500 when I use the Delete rod incorrectly", async () => {
     // Mock findByIdAndDelete to throw an exception
     jest.spyOn(Horse, "findByIdAndDelete").mockImplementationOnce(() => {
       throw new Error("Simulated error");
