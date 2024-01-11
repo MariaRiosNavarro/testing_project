@@ -1,13 +1,41 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+# # This workflow will do a clean installation of node dependencies, cache/restore them and run tests across different versions of node
+# # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+
+# name: Test Runner
+
+# on:
+#   # pull_request:
+#   #   types: [opened, synchronize, reopened]
+#   #   branches:
+#   #     - "**"
+#   push:
+#     branches:
+#       - "**"
+
+# jobs:
+#   test:
+#     name: Run tests
+#     runs-on: ubuntu-latest
+
+#     strategy:
+#       matrix:
+#         node-version: [20.x]
+#         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+#     steps:
+#       - uses: actions/checkout@v3
+#       - name: Use Node.js ${{ matrix.node-version }}
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: ${{ matrix.node-version }}
+#           cache: "npm"
+#       - run: npm i
+#       # - run: docker compose up - I open the containers manually, this is to long in gh_actions
+#       - run: npm run docker:test
 
 name: Test Runner
 
 on:
-  # pull_request:
-  #   types: [opened, synchronize, reopened]
-  #   branches:
-  #     - "**"
   push:
     branches:
       - "**"
@@ -17,18 +45,26 @@ jobs:
     name: Run tests
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [20.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+    services:
+      # Define los servicios necesarios (puedes añadir más si es necesario)
+      database:
+        image: mongo:latest
+        ports:
+          - 27018:27017
+        options: --name horseDB
+
+      server:
+        image: 710a008879c6ed3c7411e00e0bbe2d2a83ed07c47af1a6922b04057a43a497af
+        ports:
+          - 9000:9000
+        options: --name horseServer
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: "npm"
-      - run: npm i
-      # - run: docker compose up - I open the containers manually, this is to long in gh_actions
-      - run: npm run docker:test
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Run tests with Docker Compose
+        run: docker-compose up --abort-on-container-exit --exit-code-from server
+
+      - name: Stop and remove services
+        run: docker-compose down
