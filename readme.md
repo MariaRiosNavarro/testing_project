@@ -69,5 +69,3 @@ node_modules/
 node_modules/
 .env
 ```
-
-Add a test actions
