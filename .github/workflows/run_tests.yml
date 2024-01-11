@@ -31,4 +31,4 @@ jobs:
           cache: "npm"
       - run: npm i
       # - run: docker compose up - I open the containers manually, this is to long in gh_actions
-      - run: docker exec -it horseServer npm test
+      - run: npm run docker exec -it horseServer npm test
