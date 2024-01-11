@@ -4,8 +4,11 @@
 name: Test Runner
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
+  # pull_request:
+  #   types: [opened, synchronize, reopened]
+  #   branches:
+  #     - "**"
+  push:
     branches:
       - "**"
 
